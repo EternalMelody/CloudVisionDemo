@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
+
 const formidable = require('formidable');
-const http = require('http');
-const fs = require('fs');
-
-// Imports the Google Cloud client library
+const Storage = require('@google-cloud/storage');
 const Vision = require('@google-cloud/vision');
-
-// Instantiates a client
 const vision = Vision();
+const storage = Storage();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -17,36 +13,73 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    const form = new formidable.IncomingForm();
+    console.log("POST request received");
 
+    const form = new formidable.IncomingForm();
     form.on('error', function (err) {
         console.log('An error has occured: \n' + err);
     });
 
     form.parse(req, function (err, fields, files) {
-        // Prepare the request object
-        const request = {
-            source: {
-                filename: files.imageFile.path
-            }
+        let storagePath;
+
+        const uploadOptions = {
+            public:true
         };
 
-        // Performs label detection on the image file
-        vision.labelDetection(request)
+        storage
+            .bucket('strong-hue-175505.appspot.com')
+            .upload(files.imageFile.path, uploadOptions)
+            .then((result)=>{
+                storagePath = result[0].metadata.mediaLink;
+                console.log(result[0].name + 'uploaded to bucket');
+            })
+            .catch((err)=>{
+                console.error('ERROR:', err);
+            });
+
+        // Prepare the request object
+        const requests = {
+            image: {
+                source: {
+                    filename: files.imageFile.path
+                }
+            },
+            features: [
+                {
+                    type: "LABEL_DETECTION"
+                },
+                {
+                    type: "FACE_DETECTION"
+                },
+                {
+                    type: "TEXT_DETECTION"
+                },
+                {
+                    type: "IMAGE_PROPERTIES"
+                },
+                {
+                    type: "CROP_HINTS"
+                },
+                {
+                    type: "WEB_DETECTION"
+                }
+            ]
+        };
+
+        // Performs requested annotations on the image file
+        vision.annotateImage(requests)
             .then((results) => {
-                const labels = results[0].labelAnnotations;
-
-                console.log('Labels:');
-                labels.forEach((label) => console.log(label.description));
-
-                res.render('index', {title: files.imageFile.name});
+                let locals = {
+                    file: files.imageFile,
+                    fileUrl: storagePath,
+                    result: results[0]
+                };
+                res.render('index', locals);
             })
             .catch((err) => {
                 console.error('ERROR:', err);
             });
-
-        // TODO Perform more actions on the image
-        // TODO Render the output page
     });
 });
 
