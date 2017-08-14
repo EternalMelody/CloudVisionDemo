@@ -1,0 +1,46 @@
+<div>
+    <h4>Web entities and their relevance score</h4>
+    <ul class="list-group">
+        {{#each webEntities}}
+            <li class="list-group-item">
+                {{this.description}} = {{this.score}}
+            </li>
+        {{/each}}
+    </ul>
+</div>
+<div>
+    <h4>Full Matching Images</h4>
+    <ul class="list-group">
+        {{#each fullMatchingImages}}
+            <li class="list-group-item">
+                <a href="{{this.url}}">
+                    {{this.url}}
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+</div>
+<div>
+    <h4>Partial matching images</h4>
+    <ul class="list-group">
+        {{#each partialMatchingImages}}
+            <li class="list-group-item">
+                <a href="{{this.url}}">
+                    {{this.url}}
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+</div>
+<div>
+    <h4>Pages with matching images</h4>
+    <ul class="list-group">
+        {{#each pagesWithMatchingImages}}
+            <li class="list-group-item">
+                <a href="{{this.url}}">
+                    {{this.url}}
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+</div>

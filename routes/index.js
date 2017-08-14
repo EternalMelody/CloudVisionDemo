@@ -16,10 +16,8 @@ router.post('/', function (req, res, next) {
     console.log("POST request received");
 
     const form = new formidable.IncomingForm();
-    form.on('error', function (err) {
-        console.log('An error has occured: \n' + err);
-    });
 
+    // Parse form
     form.parse(req, function (err, fields, files) {
         let storagePath;
 
@@ -27,19 +25,20 @@ router.post('/', function (req, res, next) {
             public:true
         };
 
+        // Save uploaded file to bucket
         storage
             .bucket('strong-hue-175505.appspot.com')
             .upload(files.imageFile.path, uploadOptions)
             .then((result)=>{
                 storagePath = result[0].metadata.mediaLink;
-                console.log(result[0].name + 'uploaded to bucket');
+                console.log(result[0].name + ' uploaded to bucket');
             })
             .catch((err)=>{
                 console.error('ERROR:', err);
             });
 
-        // Prepare the request object
-        const requests = {
+        // Prepare the cloud vision request object
+        const cloudVisionRequests = {
             image: {
                 source: {
                     filename: files.imageFile.path
@@ -47,34 +46,42 @@ router.post('/', function (req, res, next) {
             },
             features: [
                 {
-                    type: "LABEL_DETECTION"
+                    type: "LABEL_DETECTION",
+                    maxResults: 10
                 },
                 {
-                    type: "FACE_DETECTION"
+                    type: "SAFE_SEARCH_DETECTION",
+                    maxResults: 10
                 },
                 {
-                    type: "TEXT_DETECTION"
+                    type: "TEXT_DETECTION",
+                    maxResults: 10
                 },
                 {
-                    type: "IMAGE_PROPERTIES"
+                    type: "IMAGE_PROPERTIES",
+                    maxResults: 10
                 },
                 {
-                    type: "CROP_HINTS"
+                    type: "CROP_HINTS",
+                    maxResults: 10
                 },
                 {
-                    type: "WEB_DETECTION"
+                    type: "WEB_DETECTION",
+                    maxResults: 10
                 }
             ]
         };
 
-        // Performs requested annotations on the image file
-        vision.annotateImage(requests)
+        // Ask cloud vision to perform requested annotations on the image file
+        vision.annotateImage(cloudVisionRequests)
             .then((results) => {
                 let locals = {
                     file: files.imageFile,
                     fileUrl: storagePath,
                     result: results[0]
                 };
+
+                // Render the index page, this time with results
                 res.render('index', locals);
             })
             .catch((err) => {

@@ -2,12 +2,11 @@
     Cloud Vision Demo
 </h1>
 <p>
-    Welcome to Mario Andhika's Cloud Vision Demo. Choose image to upload. The uploaded image will then be analyzed by Google Cloud Vision, and the analysis data will be shown below.
+    Welcome to Mario Andhika's Cloud Vision Demo. Choose image to upload. The uploaded image will then be analyzed by Google Cloud Vision, and then the top 10 analysis data will be shown below.
 </p>
 <br/>
 <form action="/" enctype="multipart/form-data" method="post" id="uploadForm">
     <div class="input-group">
-        <label class="input-group-addon" id="basic-addon1" for="imageFile">Select image file:</label>
         <input class="form-control" aria-label="basic-addon1" type="file" required="required" id="imageFile" name="imageFile" accept="image/*"/>
         <span class="input-group-btn">
             <button class="btn btn-default">Upload image</button>
@@ -15,28 +14,5 @@
     </div>
 </form>
 {{#if result}}
-    <hr/>
-    <img id="imageView" src="{{fileUrl}}"/>
-    <br/>
-    <div class="panel panel-default">
-        <nav class="panel-heading">
-            <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="#labelDetection" aria-controls="labelDetection" role="tab" data-toggle="tab">Label Detection</a></li>
-                <li role="presentation"><a href="#faceDetection" aria-controls="faceDetection" role="tab" data-toggle="tab">Face Detection</a></li>
-                <li role="presentation"><a href="#textDetection" aria-controls="textDetection" role="tab" data-toggle="tab">Text Detection</a></li>
-                <li role="presentation"><a href="#imageProperties" aria-controls="imageProperties" role="tab" data-toggle="tab">Image Properties</a></li>
-                <li role="presentation"><a href="#cropHints" aria-controls="cropHints" role="tab" data-toggle="tab">Crop Hints</a></li>
-                <li role="presentation"><a href="#webDetection" aria-controls="webDetection" role="tab" data-toggle="tab">Web Detection</a></li>
-            </ul>
-        </nav>
-        <div class="tab-content panel-body">
-            <div role="tabpanel" class="tab-pane fade in active" id="labelDetection">Label Detection</div>
-            <div role="tabpanel" class="tab-pane fade" id="faceDetection">Face Detection</div>
-            <div role="tabpanel" class="tab-pane fade" id="textDetection">Text Detection</div>
-            <div role="tabpanel" class="tab-pane fade" id="imageProperties">Image Properties</div>
-            <div role="tabpanel" class="tab-pane fade" id="cropHints">Crop Hints</div>
-            <div role="tabpanel" class="tab-pane fade" id="webDetection">Web Detection</div>
-        </div>
-    </div>
+    {{> annotation}}
 {{/if}}
-<script type="text/javascript" src="/javascripts/main.js"></script>

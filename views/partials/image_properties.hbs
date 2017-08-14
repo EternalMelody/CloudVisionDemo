@@ -1,0 +1,12 @@
+<h4>Dominant colors</h4>
+<ul class="list-group">
+    {{#each dominantColors.colors}}
+        <li class="list-group-item">
+            <div class="dominantColor" style="background-color: rgb({{this.color.red}}, {{this.color.green}}, {{this.color.blue}}">
+                Red:{{this.color.red}}, Green:{{this.color.green}}, Blue:{{this.color.blue}}
+            </div>
+            Dominance score = {{this.score}}<br/>
+            Pixel fraction = {{this.pixelFraction}}
+        </li>
+    {{/each}}
+</ul>

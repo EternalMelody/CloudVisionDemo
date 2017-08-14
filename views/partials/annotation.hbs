@@ -1,0 +1,47 @@
+<hr/>
+<img id="imageView" src="{{fileUrl}}" onerror="this.style.display='none'" />
+<br/>
+<div class="panel panel-default">
+    <nav class="panel-heading">
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#webDetection" aria-controls="webDetection" role="tab" data-toggle="tab">Web Detection</a></li>
+            <li role="presentation"><a href="#labelDetection" aria-controls="labelDetection" role="tab" data-toggle="tab">Label Detection</a></li>
+            <li role="presentation"><a href="#textDetection" aria-controls="textDetection" role="tab" data-toggle="tab">Text Detection</a></li>
+            <li role="presentation"><a href="#imageProperties" aria-controls="imageProperties" role="tab" data-toggle="tab">Image Properties</a></li>
+            <li role="presentation"><a href="#safeSearchDetection" aria-controls="safeSearchDetection" role="tab" data-toggle="tab">Safe Search Detection</a></li>
+            <li role="presentation"><a href="#cropHints" aria-controls="cropHints" role="tab" data-toggle="tab">Crop Hints</a></li>
+        </ul>
+    </nav>
+    <div class="tab-content panel-body">
+        <div role="tabpanel" class="tab-pane fade in active" id="webDetection">
+            {{#> web_detection result.webDetection }}
+                Failed to render Web Detection
+            {{/web_detection}}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="labelDetection">
+            {{#> label_detection result.labelAnnotations}}
+                Failed to render Label Detection
+            {{/label_detection}}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="textDetection">
+            {{#> text_detection result.textAnnotations}}
+                Failed to render Text Detection
+            {{/text_detection}}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="imageProperties">
+            {{#> image_properties result.imagePropertiesAnnotation}}
+                Failed to render Image Properties
+            {{/image_properties}}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="safeSearchDetection">
+            {{#> safe_search_detection result.safeSearchAnnotation}}
+                Failed to render Safe Search Detection
+            {{/safe_search_detection}}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="cropHints">
+            {{#> crop_hints result.cropHintsAnnotation}}
+                Failed to render Crop Hints
+            {{/crop_hints}}
+        </div>
+    </div>
+</div>

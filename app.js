@@ -4,12 +4,18 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const hbs = require('hbs');
 
 const index = require('./routes/index');
 
 const app = express();
 
 // view engine setup
+
+hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
