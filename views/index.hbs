@@ -1,8 +1,18 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-
-<form action="/" enctype="multipart/form-data" method="post">
-    <label for="imageFile">Select image:</label>
-    <input type="file" required="required" name="imageFile" accept="image/*">
-    <button>Upload</button>
+<h1>
+    Cloud Vision Demo
+</h1>
+<p>
+    Welcome to Mario Andhika's Cloud Vision Demo. Choose image to upload. The uploaded image will then be analyzed by Google Cloud Vision, and then the top 10 analysis data will be shown below.
+</p>
+<br/>
+<form action="/" enctype="multipart/form-data" method="post" id="uploadForm">
+    <div class="input-group">
+        <input class="form-control" aria-label="basic-addon1" type="file" required="required" id="imageFile" name="imageFile" accept="image/*"/>
+        <span class="input-group-btn">
+            <button class="btn btn-default">Upload image</button>
+        </span>
+    </div>
 </form>
+{{#if result}}
+    {{> annotation}}
+{{/if}}

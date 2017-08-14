@@ -1,0 +1,18 @@
+<ul id="cropHintsList" class="list-group"></ul>
+<script>
+    const $cropHintsList = $("#cropHintsList");
+    {{#each cropHints}}
+        let x = {{this.boundingPoly.vertices.0.x}};
+        let y = {{this.boundingPoly.vertices.0.y}};
+        let width = {{this.boundingPoly.vertices.2.x}} -x;
+        let height = {{this.boundingPoly.vertices.2.y}} -y;
+        const $li = $("<li>", {"class":"list-group-item"});
+
+        const $div = $("<div>");
+        let boundingPoly = "x:"+x+";width:"+width+";y:"+y+";height:"+height;
+        $div.html("Bounding poly = "+ boundingPoly+"<br/>Confidence = {{this.confidence}}<br/>Importance Fraction = {{this.importanceFraction}}");
+
+        $li.append($div);
+        $cropHintsList.append($li);
+    {{/each}}
+</script>
